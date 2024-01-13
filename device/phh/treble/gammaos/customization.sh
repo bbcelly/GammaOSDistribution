@@ -192,10 +192,12 @@ then
         settings put --lineage system lockscreen_rotation 1
         wm size 1620x1080
         wm reset
+        settings put system accelerometer_rotation 0
         /system/bin/tar -xvf /system/etc/retroarch64sdcard2-ktr1.tar.gz -C /
         launcheruser=$( stat -c "%U" /data/data/com.retroarch.aarch64)
         /system/bin/chown -R $launcheruser:ext_data_rw /sdcard/Android/data/com.retroarch.aarch64
 	settings put --lineage system key_home_long_press_action 2
+        wm reset
 	settings put --lineage system display_color_adjustment "0.97 0.91 1.0"
 	service call SurfaceFlinger 1022 f 1.1
 	wm density 288
@@ -210,7 +212,9 @@ then
 	appops set com.ktpocket.launcher SYSTEM_ALERT_WINDOW allow
 	appops set com.ktpocket.launcher WRITE_SETTINGS allow
         settings put secure sysui_qs_tiles "wifi,bt,performance,abxy,dpadAnalogToggle,analogaxis,rightanalogaxis,airplane,rotation,cast,screenrecord"
-	wm reset
+	sed -i 's/^video_threaded.*/video_threaded = "false"/' /sdcard/Android/data/com.retroarch.aarch64/files/retroarch.cfg
+        settings put system accelerometer_rotation 0
+	settings put global device_name "KT-R1"
         fi
 
 	am force-stop com.android.gallery3d
